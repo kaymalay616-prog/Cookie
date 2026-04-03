@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XSS Demo (Safe) - Div Version</title>
+    <style>
+        /* Frame အလှဆင်ချက် */
+        .result-frame {
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px;
+            background-color: #f5f5f5;
+            font-family: monospace;
+            font-size: 16px;
+        }
+        .result-frame h3 {
+            margin-top: 0;
+            color: #d32f2f;
+        }
+        .cookie-display {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            word-wrap: break-word;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Click လုပ်ရင် alert ပေါ်မယ် (သင့်စက်ထဲမှာပဲ)</h1>
+<button onclick="alert('XSS attack simulated!')">Click me</button>
+
+<!-- Div Frame - ဒီမှာ cookie ကိုပြမယ် (console မပါ) -->
+<div class="result-frame">
+    <h3>🔐 Hacker မြင်ရမယ့် Cookie Data</h3>
+    <div class="cookie-display" id="cookieOutput">
+        <!-- Cookie data ဒီမှာပေါ်မယ် -->
+    </div>
+    <p style="font-size: 12px; color: #666;">※ ဒါက သင့် browser ရဲ့ cookie ဖြစ်ပါတယ် (local only)</p>
+</div>
+
+<script>
+    // Console log ကို ဖယ်ရှားပြီး div ထဲမှာပြမယ်
+    var cookieData = document.cookie;
+    
+    // Cookie မရှိရင် message ပြမယ်
+    if (cookieData === "") {
+        document.getElementById("cookieOutput").innerHTML = "⚠️ Cookie မတွေ့ပါ (session cookie မရှိသေး)";
+    } else {
+        document.getElementById("cookieOutput").innerHTML = "<strong>📦 " + cookieData + "</strong>";
+    }
+    
+    // Alert ကတော့ ရှိနေဦးမယ် (XSS သဘောတရားအတွက်)
+    alert("This is what hacker would see: " + cookieData);
+</script>
+
+</body>
+</html>
